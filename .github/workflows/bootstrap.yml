@@ -1,0 +1,96 @@
+name: Bootstrap Lexa AsymCompute
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bootstrap.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch verified source project
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/JoshJiang1012/JoshJiang1012.github.io.git /tmp/source
+          test -f /tmp/source/projects/lexa-asymcompute/README.md
+          rm -rf /tmp/project
+          mkdir -p /tmp/project
+          cp -a /tmp/source/projects/lexa-asymcompute/. /tmp/project/
+
+      - name: Replace bootstrap repository with standalone project
+        shell: bash
+        run: |
+          set -euo pipefail
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a /tmp/project/. .
+          mkdir -p .github/workflows
+          # The project ships its own standalone CI workflow at this path.
+          test -f .github/workflows/ci.yml
+
+      - name: Validate standalone release
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -e .
+          python -m unittest discover -s tests -v
+          python scripts/generate_reference_data.py
+          python scripts/validate_release.py
+          lexa-asymcompute --version
+          lexa-asymcompute formula-summary
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          targets = [
+              Path('README.md'),
+              Path('docs/MATHEMATICAL_MODEL.md'),
+              Path('docs/FORMULA_CHEATSHEET.md'),
+              Path('docs/BENCHMARK_PROTOCOL.md'),
+              Path('docs/README.zh-TW.md'),
+          ]
+          bad = []
+          patterns = {
+              'unbraced_subscript': re.compile(r'_[A-Za-z0-9*]'),
+              'unbraced_superscript': re.compile(r'\^[A-Za-z0-9*]'),
+              'unbraced_sum_index': re.compile(r'\\sum_[A-Za-z0-9]'),
+              'unbraced_max_index': re.compile(r'\\max_[A-Za-z0-9]'),
+              'unbraced_mathcal': re.compile(r'\\mathcal\s+[A-Za-z]'),
+          }
+          for path in targets:
+              text = path.read_text(encoding='utf-8')
+              # Ignore fenced code and inline code for math lint.
+              cleaned = re.sub(r'```.*?```', '', text, flags=re.S)
+              cleaned = re.sub(r'`[^`]*`', '', cleaned)
+              for name, pattern in patterns.items():
+                  for m in pattern.finditer(cleaned):
+                      bad.append((str(path), name, m.group(0)))
+              if cleaned.count('$$') % 2:
+                  bad.append((str(path), 'unpaired_display_math', '$$'))
+          if bad:
+              for item in bad[:50]:
+                  print(item)
+              raise SystemExit(f'math rendering contract failed: {len(bad)} findings')
+          print('GitHub math rendering contract: PASS')
+          PY
+
+      - name: Publish standalone source tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'feat: publish Lexa AsymCompute v2.0.0 standalone' || true
+          git push origin HEAD:main
