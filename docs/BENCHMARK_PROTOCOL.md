@@ -19,20 +19,20 @@ For stable stages, use at least 10 repetitions. For noisy or remote systems, use
 
 Mean:
 
-$$
+```math
 \bar x=\frac{1}{n}\sum_{i=1}^{n}x_{i}.
-$$
+```
 
 Sample standard deviation:
 
-$$
+```math
 s=\sqrt{\frac{1}{n-1}\sum_{i}(x_{i}-\bar x)^{2}}.
-$$
+```
 
 Approximate 95% confidence interval for sufficiently regular samples:
 
-$$
+```math
 \bar x\pm t_{0.975,n-1}\frac{s}{\sqrt n}.
-$$
+```
 
 Tail-sensitive systems should publish empirical percentiles even when the mean is reported.

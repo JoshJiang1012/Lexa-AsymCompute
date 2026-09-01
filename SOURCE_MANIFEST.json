@@ -63,8 +63,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "a44b68821d7476ed8cb1a928229fb180352715a3ae54a69b65d696905403ba7d",
-      "size": 22319
+      "sha256": "36a02bc6409fb9c732f56544e37573c5e91a6aaf0b67ba8f0fa1a7ada96d6067",
+      "size": 22739
     },
     {
       "path": "RELEASE_NOTES.md",
@@ -163,8 +163,8 @@
     },
     {
       "path": "docs/BENCHMARK_PROTOCOL.md",
-      "sha256": "3923d91c92f0bd12dcca4dcc190c57c5ab3a1084fd7f34096adb2ff3686477b7",
-      "size": 1225
+      "sha256": "bcb1ce499e18bb338660519fb4c97332e646ea0b4fd0b5262e639e83ea0e44b9",
+      "size": 1243
     },
     {
       "path": "docs/DATA_PROVENANCE.md",
@@ -178,8 +178,8 @@
     },
     {
       "path": "docs/FORMULA_CHEATSHEET.md",
-      "sha256": "fd469919991f40ec9e44735d5cb315bfb3b2d8cbb82f0804205a1e1601954a34",
-      "size": 808
+      "sha256": "c3bb176bc4e1ee3463c620b713036d14f5b4da543fcb91c0e761368993eca5b2",
+      "size": 874
     },
     {
       "path": "docs/LIMITATIONS.md",
@@ -203,8 +203,8 @@
     },
     {
       "path": "docs/README.zh-TW.md",
-      "sha256": "103bb41e0ee8d876b135e77da426cc70495f6405a0c861edf73d7de90ff04c4b",
-      "size": 787
+      "sha256": "a371446a0dd6b1445a7c893b261384c2eb8b62862780af9c2a73cd8b9775349e",
+      "size": 793
     },
     {
       "path": "docs/USE_CASES.md",
