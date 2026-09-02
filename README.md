@@ -79,24 +79,38 @@ The following values were measured by `scripts/benchmark_host.py` on the validat
 
 These values characterize the VM and Python harness only. They do **not** represent a desktop GPU, CUDA kernel or neural-network inference runtime.
 
-### Observed synthetic route-pipeline stress run
+### Observed on the physical workstation host
 
-A seeded synthetic trace with 4,096 units, 36 layers and top-4 routing generated and analyzed:
+The following values were measured on the physical workstation (Intel Core i7-13700F, 31.83 GiB RAM, NVIDIA GeForce RTX 4080):
 
 | Measurement | Observed value |
 |---|---:|
-| Routing events | 147,456 |
-| JSONL size | 27,227,837 bytes |
-| Generation wall time | 3.39 s |
-| Generation throughput | 43,497 events/s |
-| Generation peak RSS | 90.55 MiB |
-| Analysis wall time | 1.76 s |
-| Analysis throughput | 83,782 events/s |
-| Input processing rate | 15.47 MB/s |
-| Analysis peak RSS | 164.10 MiB |
-| Geometry validation | Pass |
-| 70/30 holdout selection hit rate, cache 18 | 61.19% |
-| Full top-4 row hit rate | 12.13% |
+| Logical CPUs visible | 24 |
+| Memory visible | **31.83 GiB** (34,175,893,504 bytes) |
+| NVIDIA GPU visible | **Yes** (RTX 4080) |
+| Python `bytearray` copy, median | **15.248 GB/s** (Peak: 16.488 GB/s) |
+| SHA-256 throughput, median | **0.598 GB/s** |
+| Temporary filesystem read, median | **2.078 GB/s** |
+| Temporary filesystem write, median | **0.154 GB/s** (fsync sync write) |
+
+### Observed synthetic route-pipeline stress run
+
+A seeded synthetic trace with 4,096 units, 36 layers and top-4 routing generated and analyzed across environments:
+
+| Measurement | Validation VM | Physical Workstation |
+|---|---:|---:|
+| Routing events | 147,456 | 147,456 |
+| JSONL size | 27,227,837 bytes | 27,302,217 bytes |
+| Generation wall time | 3.39 s | **2.05 s** |
+| Generation throughput | 43,497 events/s | **72,081 events/s** |
+| Generation peak RSS | 90.55 MiB | 0.04 MiB (traced) |
+| Analysis wall time | 1.76 s | 9.91 s |
+| Analysis throughput | 83,782 events/s | 14,873 events/s |
+| Input processing rate | 15.47 MB/s | 2.63 MB/s |
+| Analysis peak RSS | 164.10 MiB | 78.12 MiB |
+| Geometry validation | Pass | **Pass** |
+| 70/30 holdout selection hit rate, cache 18 | 61.19% | **70.48%** |
+| Full top-4 row hit rate | 12.13% | **22.33%** |
 
 The timings are real measurements of the trace implementation, but the routing pattern is synthetic and is **not model inference throughput**. Raw summaries are under [`data/observed/`](data/observed/).
 

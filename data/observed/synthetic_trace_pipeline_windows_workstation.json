@@ -1,0 +1,30 @@
+{
+  "analysis": {
+    "cache_per_layer": 18,
+    "calibration_tokens": 2867,
+    "elapsed_seconds": 9.9147,
+    "evaluation_tokens": 1229,
+    "events_per_second": 14872.51,
+    "full_row_hit_rate": 0.2232619112196004,
+    "geometry_valid": true,
+    "input_throughput_mb_s": 2.6262,
+    "peak_rss_mib": 78.1216,
+    "selection_hit_rate": 0.7047565771630051
+  },
+  "classification": "observed_synthetic_harness",
+  "environment": "windows-host-workstation",
+  "generator": {
+    "elapsed_seconds": 2.0457,
+    "events": 147456,
+    "events_per_second": 72080.53,
+    "jsonl_bytes": 27302217,
+    "layers": 36,
+    "peak_rss_mib": 0.0405,
+    "tokens": 4096,
+    "top_k": 4
+  },
+  "measured": true,
+  "notes": "The trace is seeded synthetic routing metadata. Timings are real measurements of this implementation on this host workstation, not neural-network inference throughput.",
+  "schema_version": "1.0",
+  "timestamp_utc": "2026-09-02T17:33:44Z"
+}
